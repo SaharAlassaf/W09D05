@@ -32,7 +32,7 @@ function Signin() {
         token: res.data.token
       };
       dispatch(login(data));
-      if (res.data.result.role.role == "admin") {
+      if (res.data.result.role.role === "admin") {
         navigate(`/Dashboard`);
       } else {
         navigate(`/Posts`);

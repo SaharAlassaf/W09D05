@@ -24,7 +24,7 @@ function App() {
         <Route exact path="/SigninGoogle" element={<SigninGoogle />} />
         <Route exact path="/Dashboard" element={<Dashboard />} />
         <Route exact path="/Posts" element={<Posts />} />
-        <Route exact path="/Post" element={<Post />} />
+        <Route exact path="/Post/:id" element={<Post />} />
       </Routes>
     </>
   );

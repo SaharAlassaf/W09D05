@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../reducers/sign";
 import Landing from "../Landing";
-import Post from "../Post";
 import axios from "axios";
 
 function Dashboard() {
@@ -12,13 +11,16 @@ function Dashboard() {
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  useEffect(
+    () => {
+      getUsers();
+    }, // eslint-disable-next-line
+    []
+  );
 
   const state = useSelector((state) => {
     return {
-      sign: state.sign
+      sign: state.sign.token
     };
   });
 
@@ -36,17 +38,15 @@ function Dashboard() {
 
   const deleteUsers = async (id) => {
     try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/deleteUser/${id}`,
-        {
-          headers: { Authorization: `Bearer ${state.sign.token}` }
-        }
-      );
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/deleteUser/${id}`, {
+        headers: { Authorization: `Bearer ${state.sign.token}` }
+      });
       // console.log(res.data);
       getUsers();
     } catch (error) {
       console.log(error);
       console.log(error.response.data.message);
+      setMessage(error.response.data.message);
     }
   };
 
@@ -57,7 +57,7 @@ function Dashboard() {
 
   return (
     <>
-      {state.sign.token ? (
+      {state.sign ? (
         <>
           <h1>Dashboard</h1>
           {message}

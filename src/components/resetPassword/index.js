@@ -16,13 +16,10 @@ function ResetPassword() {
 
   const resetPassword = async () => {
     try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/resetPassword`,
-        {
-          resetLink: state.auth,
-          newPass
-        }
-      );
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/resetPassword`, {
+        resetLink: state.auth,
+        newPass
+      });
       // console.log(res.data);
       setReset(true);
       localStorage.clear();

@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Post() {
-    return (
-        <div>
-            
-        </div>
-    )
+  const { id } = useParams();
+  let navigate = useNavigate();
+
+  return (<>
+  <h1>{id}</h1>
+  </>);
 }
 
-export default Post
+export default Post;
