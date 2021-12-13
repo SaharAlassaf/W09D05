@@ -95,7 +95,7 @@ function Posts() {
 
   return (
     <>
-      {state.sign ? (
+      {!state.sign ? (
         <>
           <h1>Posts</h1>
           {message ? (
