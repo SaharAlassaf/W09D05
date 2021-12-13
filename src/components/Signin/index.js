@@ -1,37 +1,46 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../reducers/sign";
+import SigninGoogle from "../SigninGoogle";
 import axios from "axios";
 
 function Signin() {
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [emailORusername, setEmailORusername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const state = useSelector((state) => {
     return {
-      sign: state.sign,
+      sign: state.sign
     };
   });
-  console.log(state.sign);
+  // console.log(state.sign);
 
   const signin = async () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/signin`, {
-        email,
-        password,
+        emailORusername,
+        password
       });
-      // console.log(res.data);
+
       const data = {
         role: res.data.result.role.role,
-        token: res.data.token,
+        token: res.data.token
       };
       dispatch(login(data));
-      // console.log(data);
+      if (res.data.result.role.role == "admin") {
+        navigate(`/Dashboard`);
+      } else {
+        navigate(`/Posts`);
+      }
     } catch (error) {
       console.log(error);
+      console.log(error.response.data);
+      setMessage(error.response.data)
     }
   };
 
@@ -42,7 +51,7 @@ function Signin() {
           <input
             type="email"
             placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmailORusername(e.target.value)}
           />
           <input
             type="password"
@@ -50,18 +59,31 @@ function Signin() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button onClick={signin}>Sign in</button>
+          {message}
+          <SigninGoogle />
+          <Link to="/ForgotPassword">
+            {" "}
+            <p> forgot password?</p>{" "}
+          </Link>
+          <p>
+            Don't have an account?{" "}
+            <span>
+              <Link to="/Signup">Sign up</Link>
+            </span>
+            .
+          </p>
         </>
       ) : (
         <>
-          {state.sign.role === "admin" ? (
+          {/* {state.sign.role === "admin" ? (
             <Link to="/Dashboard">
               <buttoun>Dashboard</buttoun>
             </Link>
           ) : (
-            <Link to="/Tasks">
-              <buttoun>Tasks</buttoun>
+            <Link to="/Posts">
+              <buttoun>Posts</buttoun>
             </Link>
-          )}
+          )} */}
         </>
       )}
     </>

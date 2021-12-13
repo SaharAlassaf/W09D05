@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Signup from "../Signup"
+
 
 function Landing() {
   return (
     <>
-      <Link to="/Signin">
+    <Signup />
+      {/* <Link to="/Signin">
         <button>Sign in</button>
       </Link>
       <Link to="/Signup">
@@ -12,7 +14,7 @@ function Landing() {
       </Link>
       <Link to="/SigninGoogle">
         <button>Sign in with google</button>
-      </Link>
+      </Link> */}
     </>
   );
 }

@@ -1,61 +1,62 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../reducers/sign";
+import { useDispatch } from "react-redux";
+import { active } from "../../reducers/auth";
+import SigninGoogle from "../SigninGoogle";
 import axios from "axios";
 
 function Signup() {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const state = useSelector((state) => {
-    return {
-      sign: state.sign,
-    };
-  });
+  const [message, setMessage] = useState(false);
 
   const signup = async () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`, {
         email,
-        password,
+        username,
+        password
       });
-      // console.log(res.data);
-      const data = {
-        role: res.data.result.role.role,
-        token: res.data.token,
-      };
-      dispatch(login(data));
+      console.log(res.data);
+      dispatch(active(res.data.token));
       // console.log(data);
     } catch (error) {
       console.log(error);
+      console.log(error.response.data.message);
+      setMessage(error.response.data.message)
     }
   };
+
   return (
     <>
-      {!state.sign.token ? (
-        <>
-          <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button onClick={signup}>Sign up</button>
-        </>
-      ) : (
-        <>
-          <Link to="/Tasks">
-            <buttoun>Tasks</buttoun>
-          </Link>{" "}
-        </>
-      )}
+      <input
+        type="email"
+        placeholder="Email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Username"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button onClick={signup}>Sign up</button>
+      {message}
+      <SigninGoogle />
+      <p>
+        Already have an account?{" "}
+        <span>
+          <Link to="/Signin">Sign in</Link>
+        </span>
+        .
+      </p>
     </>
   );
 }

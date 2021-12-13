@@ -4,8 +4,12 @@ import Landing from "./components/Landing";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
-import Tasks from "./components/Tasks";
+import Posts from "./components/Posts";
+import Post from "./components/Post";
 import SigninGoogle from "./components/SigninGoogle";
+import ForgotPassword from "./components/forgotPassword"
+import ResetPassword from "./components/resetPassword"
+import ActivateAccount from "./components/ActivateAccount";
 
 function App() {
   return (
@@ -13,10 +17,14 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Landing />} />
         <Route exact path="/Signin" element={<Signin />} />
+        <Route exact path="/resetPassword" element={<ResetPassword />} />
+        <Route exact path="/forgotPassword" element={<ForgotPassword />} />
         <Route exact path="/Signup" element={<Signup />} />
+        <Route exact path="/activateAccount" element={<ActivateAccount />} />
         <Route exact path="/SigninGoogle" element={<SigninGoogle />} />
         <Route exact path="/Dashboard" element={<Dashboard />} />
-        <Route exact path="/Tasks" element={<Tasks />} />
+        <Route exact path="/Posts" element={<Posts />} />
+        <Route exact path="/Post" element={<Post />} />
       </Routes>
     </>
   );
