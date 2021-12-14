@@ -8,6 +8,7 @@ function Post() {
   let navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const [comment, setComment] = useState("");
 
   useEffect(
     () => {
@@ -84,11 +85,11 @@ function Post() {
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/like/${id}`,
         {
-            userId: state.sign.userId
+          userId: state.sign.userId
         }
       );
-    //   console.log(res.data);
-        setIsLiked(!res.data.isLiked);
+      //   console.log(res.data);
+      setIsLiked(res.data.isLiked);
       getPost();
     } catch (error) {
       console.log(error);
@@ -96,7 +97,25 @@ function Post() {
     }
   };
 
-  console.log(state.sign);
+  const addComment = async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/addComment/${id}`,
+        {
+          comment,
+          userId: state.sign.userId
+        },
+        {
+          headers: { Authorization: `Bearer ${state.sign.token}` }
+        }
+      );
+      //   console.log(res.data);
+      getPost();
+    } catch (error) {
+      console.log(error);
+      console.log(error.response);
+    }
+  };
 
   return (
     <>
@@ -133,10 +152,10 @@ function Post() {
           </h3>
           {post.comments.map((item, i) => (
             <div key={item._id}>
-              <p>{item.user.username}:</p>
+              <p>{item.user.username}</p>
               <p>{item.comment}</p>
-              {state.sign.id === item.user._id ||
-              state.sign.role === "admin" ? (
+              {(state.sign.id == item.user._id ||
+              state.sign.role == "admin") ? (
                 <>
                   {" "}
                   <button onClick={() => deleteComment(item._id)}>
@@ -151,6 +170,13 @@ function Post() {
               ) : null}
             </div>
           ))}
+          <textarea
+            name="w3review"
+            rows="4"
+            cols="50"
+            onChange={(e) => setComment(e.target.value)}
+          ></textarea>
+          <button onClick={addComment}>Share</button>
         </>
       ) : (
         "Not found"
