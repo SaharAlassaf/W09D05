@@ -1,7 +1,7 @@
 const initState = {
   role: "",
   token: "",
-  id: ""
+  userId: ""
 };
 
 const sign = (state = initState, action) => {
@@ -9,11 +9,11 @@ const sign = (state = initState, action) => {
 
   switch (type) {
     case "LOGIN":
-      const { role, token, id } = payload;
+      const { role, token, userId } = payload;
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-      localStorage.setItem("userId", id);
-      return { role, token, id };
+      localStorage.setItem("userId", userId);
+      return { role, token, userId };
 
     case "LOGOUT":
       localStorage.clear();
@@ -23,7 +23,7 @@ const sign = (state = initState, action) => {
       let tokenStorage = localStorage.getItem("token");
       let roleStorage = localStorage.getItem("role");
       let idStorage = localStorage.getItem("userId");
-      if (tokenStorage && roleStorage && idStorage) return { role: roleStorage, token: tokenStorage, id: idStorage };
+      if (tokenStorage && roleStorage && idStorage) return { role: roleStorage, token: tokenStorage, userId: idStorage };
       else return state;
   }
 };
