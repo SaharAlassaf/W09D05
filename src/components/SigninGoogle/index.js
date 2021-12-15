@@ -19,7 +19,7 @@ function SigninGoogle() {
     }
   };
 
-  const responseErrorGoogle = (response) => {
+  const responseErrorGoogle = () => {
     console.log("Somthing went wrong!");
   };
 

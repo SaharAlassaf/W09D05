@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
 function ActivateAccount() {
+  let navigate = useNavigate();
   const [message, setMessage] = useState(false);
 
   const state = useSelector((state) => {
@@ -10,8 +12,6 @@ function ActivateAccount() {
       auth: state.auth.token
     };
   });
-
-  console.log(state.auth);
 
   const activateAccount = async () => {
     let activeTokenStorage = localStorage.getItem("activeToken");
@@ -23,7 +23,7 @@ function ActivateAccount() {
         }
       );
       console.log(res.data);
-    //   localStorage.clear();
+      localStorage.clear();
     } catch (error) {
       console.log("here");
       console.log(error);
@@ -40,7 +40,15 @@ function ActivateAccount() {
       {state.auth.token ? (
         "Fail"
       ) : (
-        <>{message ? "Fail server" : "Signup successfully✅"}</>
+        <div className="col-md-8 col-9 offset-md-4 my-24">
+        <h1 className="error-title"><>{message ? "Fail server" : "Signup successfully✅"}</></h1>
+        <button
+          onClick={() => navigate("/Signin")}
+          className="btn btn-lg btn-outline-primary mt-3"
+        >
+          Sign in
+        </button>
+      </div>
       )}
     </>
   );
