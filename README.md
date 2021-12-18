@@ -7,6 +7,12 @@ As a user registered on the website, I want the ability to show, add, change and
 
 As an admin user, I want to show and delete a users and their posts and comments.
 
+## UI
+
+<img width="786" alt="Screen Shot 1443-05-14 at 8 58 18 PM" src="https://user-images.githubusercontent.com/92248067/146651992-745d67f0-122f-42c0-a759-138591ffa0a7.png">
+
+<img width="524" alt="Screen Shot 1443-05-14 at 9 24 26 PM" src="https://user-images.githubusercontent.com/92248067/146651998-bbbdf994-9994-4c70-a88a-37b19d3ccd39.png">
+
 ## Getting started
 
 First clone this repository.
@@ -61,7 +67,7 @@ $ npm start
 - Post
 
 ## UML diagram
-<img src="https://user-images.githubusercontent.com/92248067/146651949-2a53d1e6-e86d-4921-ba19-03800d1093af.jpg" width="400">
+<img src="https://user-images.githubusercontent.com/92248067/146651949-2a53d1e6-e86d-4921-ba19-03800d1093af.jpg" width="500">
 
 ## Back end 
 [Back-end repository](https://github.com/SaharAlassaf/W08D04)
