@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Modal from "react-bootstrap/Modal";
 import Nav from "../Nav";
 import axios from "axios";
 
 function Post() {
   const { id } = useParams();
   let navigate = useNavigate();
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
   const [post, setPost] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
   const [comment, setComment] = useState("");
+  const [newComment, setNewComment] = useState("");
 
   useEffect(
     () => {
@@ -32,9 +37,9 @@ function Post() {
           headers: { Authorization: `Bearer ${state.sign.token}` }
         }
       );
-      console.log(res.data);
+      console.log("post", res.data);
       setPost(res.data);
-      if (res.data.likes.find((item) => item.user === state.sign.id)) {
+      if (res.data.likes.find((item) => item.user._id === state.sign.id)) {
         setIsLiked(true);
       }
     } catch (error) {
@@ -89,12 +94,11 @@ function Post() {
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/like/${id}`,
         {
-          userId: state.sign.userId
+          userId: state.sign.id
         }
       );
       //   console.log(res.data);
       setIsLiked(res.data.isLiked);
-      getPost();
     } catch (error) {
       console.log(error);
       console.log(error.response);
@@ -121,6 +125,26 @@ function Post() {
     }
   };
 
+  const editComment = async (comId) => {
+    console.log(id);
+    console.log(comId);
+    console.log(newComment);
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/editComment/${id}/${comId}`,
+        {
+          comment: newComment
+        },
+        {
+          headers: { Authorization: `Bearer ${state.sign.token}` }
+        }
+      );
+      getPost();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {post ? (
@@ -135,24 +159,24 @@ function Post() {
                     src={post.post.img}
                     alt="img"
                   />
+
                   <div className="card-body">
-                    <div className="recent-message d-flex px-4 py-3">
-                      {post.likes.length > 1
-                        ? post.likes.length + " likes"
-                        : post.likes.length + " like"}
-                    </div>
                     {isLiked ? (
-                      <button className="btn icon icon-left" onClick={like}>
+                      <button className="btn icon" onClick={like}>
                         <i
                           data-feather="user"
                           className="bi bi-heart-fill fs-4"
                         ></i>
                       </button>
                     ) : (
-                      <button className="btn icon icon-left" onClick={like}>
+                      <button className="btn icon" onClick={like}>
                         <i data-feather="user" className="bi bi-heart fs-4"></i>
                       </button>
                     )}
+                    {post.likes.length > 1
+                      ? post.likes.length + " likes"
+                      : post.likes.length + " like"}
+
                     <h5 className="card-title">
                       {post.post.user.username}: {post.post.desc}
                     </h5>
@@ -172,6 +196,7 @@ function Post() {
                           <button
                             type="reset"
                             className="btn btn-light-primary"
+                            onClick={handleShow}
                           >
                             Edit
                           </button>
@@ -194,10 +219,19 @@ function Post() {
                         </div>
                       </div>
                       <p>{item.comment}</p>
+
                       {state.sign.id === item.user._id ||
                       state.sign.role === "admin" ? (
                         <>
-                          {" "}
+                          <textarea
+                            className="form-control"
+                            name="description"
+                            rows="4"
+                            cols="50"
+                            placeholder="Leave a description here"
+                            id="floatingTextarea"
+                            onChange={(e) => setNewComment(e.target.value)}
+                          ></textarea>{" "}
                           <div className="form-actions d-flex justify-content-end">
                             <button
                               onClick={() => deleteComment(item._id)}
@@ -206,9 +240,8 @@ function Post() {
                               Delete
                             </button>
                             <button
-                              // onClick={() => deleteUsers(post.post._id)}
-                              type="reset"
                               className="btn btn-light-primary"
+                              onClick={() => editComment(item._id)}
                             >
                               Edit
                             </button>

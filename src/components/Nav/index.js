@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { storage } from "../firebase";
 import Modal from "react-bootstrap/Modal";
@@ -86,7 +86,7 @@ function Nav() {
     try {
       console.log(state.sign);
       console.log(url);
-       await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_BASE_URL}/createPost`,
         { img: url, desc },
         {
@@ -113,6 +113,7 @@ function Nav() {
             <div className="header-top">
               <div className="container">
                 <button
+                  title="Logout"
                   className="btn icon icon-left"
                   id="leave"
                   onClick={logOut}
@@ -123,12 +124,17 @@ function Nav() {
                   ></i>
                 </button>
                 <div className="logo">
-                  <h1>Insta.</h1>
-                  {/* <a href="index.html"><img src="assets/images/logo/logo.png" alt="Logo" srcset=""></a> */}
+                  <Link to="/Posts" className="linkLogo">
+                    <h1>Insta.</h1>
+                  </Link>
                 </div>
                 <ul className=" ms-auto mb-6 mb-lg-0" id="nav">
                   <li>
-                    <button className="btn icon icon-left" onClick={handleShow}>
+                    <button
+                      className="btn icon icon-left"
+                      onClick={handleShow}
+                      title="Add post"
+                    >
                       <i
                         data-feather="user"
                         className="bi bi-plus-square bi-sub fs-4"
@@ -205,10 +211,10 @@ function Nav() {
                 </Modal>
                 <div className="user-menu d-flex">
                   <div className="user-name text-end me-3">
-                    <h6 className="mb-0 text-gray-600">{name}</h6>
-                    <p className="mb-0 text-sm text-gray-600">
+                    <h4 className="mb-0 text-gray-600">{name}</h4>
+                    <h5 className="mb-0 text-sm text-gray-600">
                       {state.sign.role}
-                    </p>
+                    </h5>
                   </div>
                   <div className="user-img d-flex align-items-center">
                     <div className="avatar avatar-md">
