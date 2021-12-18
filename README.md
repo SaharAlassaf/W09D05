@@ -61,7 +61,7 @@ $ npm start
 - Post
 
 ## UML diagram
-
+<img src="https://user-images.githubusercontent.com/92248067/146651949-2a53d1e6-e86d-4921-ba19-03800d1093af.jpg" width="400">
 
 ## Back end 
 [Back-end repository](https://github.com/SaharAlassaf/W08D04)
