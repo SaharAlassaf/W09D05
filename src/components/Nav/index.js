@@ -75,7 +75,7 @@ function Nav() {
         headers: { Authorization: `Bearer ${state.sign.token}` }
       });
       //   console.log(res.data);
-      const result = res.data.filter((word) => word._id > state.sign.id);
+      const result = res.data.filter((item) => item._id > state.sign.id);
       setName(result[0].user.username);
     } catch (error) {
       console.log(error);
